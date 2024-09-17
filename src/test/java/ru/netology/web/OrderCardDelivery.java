@@ -30,7 +30,7 @@ public class OrderCardDelivery {
         $("[data-test-id=date] input").setValue(formattedDate);
 
         // Заполнение поля "Фамилия и Имя"
-        $("[name='name']").setValue("Цыбулька Alina");
+        $("[name='name']").setValue("Цыбулька Алина");
 
         // Заполнение поля "Телефон"
         $("[name='phone']").setValue("+79858930397");
