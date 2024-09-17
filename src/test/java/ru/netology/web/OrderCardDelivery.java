@@ -1,6 +1,13 @@
 package ru.netology.web;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -11,6 +18,17 @@ import static com.codeborne.selenide.Selenide.*;
 
 
 public class OrderCardDelivery {
+//    private WebDriver driver;
+//
+//    @BeforeEach
+//    public void setUp() {
+//        WebDriverManager.chromedriver().setup();
+//    }
+//
+//    @AfterEach
+//    public void tearDown() {
+//        driver.quit();
+//    }
 
     @Test
     public void shouldCreateMeeting() throws InterruptedException {
