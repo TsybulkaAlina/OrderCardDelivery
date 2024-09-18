@@ -1,37 +1,24 @@
 package ru.netology.web;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
+import com.codeborne.selenide.Condition;
+import com.codeborne.selenide.Configuration;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.Keys;
 
+import java.time.Duration;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 import static com.codeborne.selenide.Condition.visible;
-import static com.codeborne.selenide.Selectors.withText;
 import static com.codeborne.selenide.Selenide.*;
 
-
 public class OrderCardDelivery {
-//    private WebDriver driver;
-//
-//    @BeforeEach
-//    public void setUp() {
-//        WebDriverManager.chromedriver().setup();
-//    }
-//
-//    @AfterEach
-//    public void tearDown() {
-//        driver.quit();
-//    }
 
     @Test
-    public void shouldCreateMeeting() throws InterruptedException {
+    public void shouldCreateMeeting() {
 
         //Открываем страницу с формой заказа
         open("http://localhost:9999");
@@ -41,11 +28,14 @@ public class OrderCardDelivery {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
         String formattedDate = date.format(formatter);
 
-        //Заполнение поля "Город"
+        // Заполнение поля "Город"
         $("[data-test-id=city] input").setValue("Москва");
 
+        // Очистка поля "Дата" перед вводом
+        $("[data-test-id='date'] input").sendKeys(Keys.chord(Keys.SHIFT, Keys.HOME), Keys.BACK_SPACE);
+
         // Заполнение поля "Дата"
-        $("[data-test-id=date] input").setValue(formattedDate);
+        $("[data-test-id='date'] input").setValue(formattedDate);
 
         // Заполнение поля "Фамилия и Имя"
         $("[name='name']").setValue("Цыбулька Алина");
@@ -54,16 +44,14 @@ public class OrderCardDelivery {
         $("[name='phone']").setValue("+79858930397");
 
         // Установка флажка согалсия
-        $(("[data-test-id=agreement]")).click();
+        $("[data-test-id=agreement]").click();
 
         // Отправка формы
         $("button.button_view_extra").click();
 
-        // Проверка состояния загрузки
-        Thread.sleep(10000);
-
-        // Проверка всплывающего  окна об успешном завершении бронирования
-        $(withText("Успешно!")).shouldBe(visible);
-
+        // Проверка всплывающего окна об успешном завершении
+        $(".notification__content")
+                .shouldHave(Condition.text("Встреча успешно забронирована на " + formattedDate), Duration.ofSeconds(15))
+                .shouldBe(visible);
     }
 }
